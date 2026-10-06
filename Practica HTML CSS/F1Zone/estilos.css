@@ -1,0 +1,48 @@
+/* F1 ZONE - Formula 1 */
+:root{
+ --navy:#1A334A;--petrol:#1E536E;--teal:#18A3B7;--cyan:#27E6EC;
+ --blue:#5AA5CD;--violet:#6F71A1;--bg:#061521;--card:#0D2A3D;
+ --text:#F4FAFC;--muted:#BBD0DA;--border:rgba(39,230,236,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+body:before{content:"";position:fixed;inset:0;z-index:-1;opacity:.18;
+background-image:linear-gradient(rgba(39,230,236,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(39,230,236,.08) 1px,transparent 1px);background-size:55px 55px}
+img{display:block;width:100%;max-width:100%}a{color:var(--cyan);text-decoration:none}
+header{position:sticky;top:0;z-index:10;background:rgba(6,21,33,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+nav{width:min(1180px,92%);min-height:72px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-size:1.5rem;font-weight:800;color:var(--text)}.logo strong{color:var(--cyan);font-size:1.9rem}
+.menu{list-style:none;display:flex;flex-wrap:wrap;gap:6px}.menu a{display:block;padding:9px 12px;color:var(--text);border-radius:7px;transition:.3s}
+.menu a:hover,.menu a.activo{color:var(--cyan);background:rgba(39,230,236,.08)}
+.boton-login{border:1px solid var(--cyan);border-radius:20px!important;color:var(--cyan)!important}
+main{width:min(1180px,92%);margin:auto}section{padding:75px 0}
+.titulo{color:var(--cyan);font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;margin-bottom:15px}
+.subtitulo{max-width:720px;color:var(--muted);margin-bottom:35px}
+.boton{display:inline-block;padding:12px 24px;border:0;border-radius:8px;background:var(--cyan);color:#031019;font-weight:800;cursor:pointer;transition:.3s}
+.boton:hover{transform:translateY(-3px);box-shadow:0 0 25px rgba(39,230,236,.55)}
+.hero{min-height:86vh;display:flex;align-items:center;background:linear-gradient(90deg,rgba(6,21,33,.94),rgba(6,21,33,.4)),url("img/hero-f1.jpg") center/cover;border-bottom:1px solid var(--border)}
+.hero-contenido{max-width:650px;animation:entrada 1s ease-out}.etiqueta{color:var(--cyan);letter-spacing:3px;font-size:.85rem;font-weight:700}
+.hero h1{margin:15px 0 20px;font-size:clamp(3rem,7vw,6rem);line-height:.95;text-transform:uppercase}.hero h1 span{color:var(--cyan)}
+.hero p{color:var(--muted);font-size:1.1rem;margin-bottom:25px}
+.grid-dos{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.imagen-principal{border-radius:14px;border:1px solid var(--border);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.panel,.formulario{padding:30px;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.panel h2{color:var(--cyan);margin-bottom:15px}.lista{list-style:none;margin-top:20px}.lista li{padding:10px 0;border-bottom:1px solid rgba(90,165,205,.16)}
+.lista li:before{content:"▸";color:var(--cyan);margin-right:10px}
+.tarjetas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tarjeta{overflow:hidden;background:var(--card);border:1px solid var(--border);border-radius:14px;transition:.3s;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.tarjeta:hover{transform:translateY(-8px);box-shadow:0 15px 35px rgba(39,230,236,.18)}
+.tarjeta img{height:205px;object-fit:cover}.tarjeta-contenido{padding:20px}.tarjeta h2{color:var(--cyan);margin-bottom:8px}.tarjeta p{color:var(--muted)}
+.estadisticas{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.estadistica{text-align:center;padding:25px;border-left:1px solid var(--border)}.estadistica strong{display:block;font-size:2.4rem;color:var(--cyan)}
+.formulario{max-width:680px;margin:auto}.campo{margin-bottom:18px}.campo label{display:block;color:var(--cyan);font-weight:700;margin-bottom:6px}
+.campo input,.campo select,.campo textarea{width:100%;padding:12px;border:1px solid var(--blue);border-radius:7px;background:#081D2B;color:var(--text)}
+.campo textarea{min-height:130px;resize:vertical}.campo input:focus,.campo select:focus,.campo textarea:focus{outline:2px solid var(--cyan)}
+.check{display:flex;align-items:center;gap:8px;margin:15px 0}.check input{accent-color:var(--cyan)}
+.enlaces{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:18px}
+.login{min-height:82vh;display:grid;place-items:center;background:linear-gradient(rgba(6,21,33,.76),rgba(6,21,33,.92)),url("img/login-f1.jpg") center/cover}
+footer{margin-top:50px;padding:28px 5%;text-align:center;color:var(--muted);border-top:1px solid var(--border);background:#04101A}footer strong{color:var(--cyan)}
+@keyframes entrada{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:850px){nav{flex-direction:column;padding:14px 0}.menu{justify-content:center}.grid-dos,.tarjetas{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid-dos,.tarjetas,.estadisticas{grid-template-columns:1fr}.hero{min-height:75vh}.hero h1{font-size:3rem}section{padding:55px 0}.formulario{padding:22px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
