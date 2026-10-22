@@ -2,150 +2,267 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Biblioteca Digital: explora, busca y organiza libros.">
-    <meta name="theme-color" content="#f8f7f3">
-    <title>Biblioteca Digital</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <script src="js/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Biblioteca Digital: catálogo, préstamos e historial de libros.">
+  <meta name="theme-color" content="#faf9f6">
+  <title>Biblioteca Digital</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <script src="js/app.js" defer></script>
 </head>
 <body>
-    <header class="encabezado">
-        <div class="contenedor encabezado-contenido">
-            <a class="marca" href="#inicio" aria-label="Biblioteca Digital, inicio">
-                <span class="marca-icono">B</span>
-                <span>Biblioteca <strong>Digital</strong></span>
-            </a>
+  <header class="encabezado">
+    <div class="contenedor encabezado-contenido">
+      <a class="marca" href="#catalogo" aria-label="Biblioteca Digital">
+        <span class="marca-icono">B</span>
+        <span>Biblioteca <strong>Digital</strong></span>
+      </a>
 
-            <nav class="navegacion" aria-label="Navegación principal">
-                <a href="#inicio">Inicio</a>
-                <a href="#catalogo">Catálogo</a>
-                <a href="#nosotros">Nosotros</a>
-            </nav>
+      <nav class="navegacion" aria-label="Navegación principal">
+        <button class="enlace-nav activo" type="button" data-vista="catalogo">Catálogo</button>
+        <button class="enlace-nav" type="button" data-vista="prestamos">
+          Mis préstamos <span id="contador-prestamos" class="insignia">0</span>
+        </button>
+        <button class="enlace-nav" type="button" data-vista="formulario">Añadir libro</button>
+        <button class="enlace-nav" type="button" data-vista="resumen">Resumen</button>
+      </nav>
 
-            <button id="boton-tema" class="boton-tema" type="button"
-                    aria-label="Cambiar tema" title="Cambiar tema">
-                ◐
-            </button>
+      <div class="acciones-encabezado">
+        <span id="saludo-usuario" class="saludo-usuario">Hola, lector</span>
+        <button id="boton-tema" class="boton-tema" type="button" aria-label="Cambiar tema">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor principal">
+    <!-- VISTA 1: CATÁLOGO -->
+    <section id="vista-catalogo" class="vista activa" data-panel="catalogo">
+      <div class="portada">
+        <div class="portada-texto">
+          <span class="etiqueta-superior">TU PRÓXIMA LECTURA TE ESPERA</span>
+          <h1>Un universo de historias <span>en tus manos.</span></h1>
+          <p>Descubre nuevos mundos, aprende algo diferente y encuentra tu próximo libro favorito.</p>
+          <button class="boton-principal" type="button" data-vista="formulario">Añadir un libro ＋</button>
         </div>
-    </header>
-
-    <main>
-        <section id="inicio" class="portada">
-            <div class="contenedor portada-contenido">
-                <div class="portada-texto">
-                    <span class="etiqueta-superior">TU PRÓXIMA LECTURA TE ESPERA</span>
-                    <h1>Un universo de historias <span>en tus manos.</span></h1>
-                    <p>
-                        Descubre nuevos mundos, aprende algo diferente y encuentra
-                        tu próximo libro favorito en nuestra biblioteca digital.
-                    </p>
-                    <a class="boton-principal" href="#catalogo">Explorar catálogo →</a>
-                </div>
-
-                <div class="portada-ilustracion" aria-hidden="true">
-                    <div class="libro libro-uno">LECTURA</div>
-                    <div class="libro libro-dos">IMAGINA</div>
-                    <div class="libro libro-tres">DESCUBRE</div>
-                    <div class="circulo-decorativo"></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="catalogo" class="seccion-catalogo">
-            <div class="contenedor">
-                <div class="titulo-seccion">
-                    <div>
-                        <span class="etiqueta-superior">NUESTRA COLECCIÓN</span>
-                        <h2>Explora el catálogo</h2>
-                        <p>Encuentra una historia que conecte contigo.</p>
-                    </div>
-                    <span id="contador-libros" class="contador-libros">0 libros</span>
-                </div>
-
-                <div class="herramientas-catalogo">
-                    <label class="campo-busqueda">
-                        <span aria-hidden="true">⌕</span>
-                        <input id="busqueda-libros" type="search"
-                               placeholder="Buscar por título o autor..."
-                               aria-label="Buscar libros">
-                    </label>
-
-                    <label class="filtro-categoria">
-                        <span class="texto-oculto">Filtrar por categoría</span>
-                        <select id="filtro-categoria">
-                            <option value="todos">Todas las categorías</option>
-                            <option value="novela">Novela</option>
-                            <option value="ciencia">Ciencia</option>
-                            <option value="historia">Historia</option>
-                            <option value="tecnologia">Tecnología</option>
-                        </select>
-                    </label>
-                </div>
-
-                <div id="lista-libros" class="rejilla-libros" aria-live="polite">
-                    <p>Cargando catálogo...</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="nosotros" class="seccion-nosotros">
-            <div class="contenedor nosotros-contenido">
-                <div>
-                    <span class="etiqueta-superior">SOBRE NOSOTROS</span>
-                    <h2>Leer abre puertas.</h2>
-                </div>
-                <p>
-                    Biblioteca Digital es un espacio pensado para descubrir libros,
-                    explorar conocimientos y disfrutar de la lectura desde cualquier lugar.
-                </p>
-            </div>
-        </section>
-    </main>
-
-    <!-- Ventana de información de cada libro -->
-    <dialog id="dialogo-libro" class="dialogo-libro"
-            aria-labelledby="detalle-titulo">
-        <div class="dialogo-contenido">
-            <button id="boton-cerrar-detalle" class="boton-cerrar-detalle"
-                    type="button" aria-label="Cerrar detalles">
-                &times;
-            </button>
-
-            <span class="etiqueta-superior">DETALLES DEL LIBRO</span>
-
-            <div class="detalle-libro-icono" aria-hidden="true">📖</div>
-
-            <h2 id="detalle-titulo">Título del libro</h2>
-
-            <p class="detalle-autor">
-                <strong>Autor:</strong>
-                <span id="detalle-autor"></span>
-            </p>
-
-            <p class="detalle-categoria">
-                <strong>Categoría:</strong>
-                <span id="detalle-categoria"></span>
-            </p>
-
-            <div class="detalle-separador"></div>
-
-            <h3>Sobre esta obra</h3>
-            <p id="detalle-descripcion" class="detalle-descripcion"></p>
-
-            <button id="boton-cerrar-final" class="boton-principal"
-                    type="button">
-                Volver al catálogo
-            </button>
+        <div class="portada-ilustracion" aria-hidden="true">
+          <div class="circulo-decorativo"></div>
+          <div class="libro libro-uno">LECTURA</div>
+          <div class="libro libro-dos">IMAGINA</div>
+          <div class="libro libro-tres">DESCUBRE</div>
         </div>
-    </dialog>
+      </div>
 
-    <footer class="pie-pagina">
-        <div class="contenedor pie-contenido">
-            <p>© <span id="anio-actual"></span> Biblioteca Digital</p>
-            <p>Un libro puede cambiar tu manera de ver el mundo.</p>
+      <div class="titulo-seccion">
+        <div>
+          <span class="etiqueta-superior">NUESTRA COLECCIÓN</span>
+          <h2>Explora el catálogo</h2>
+          <p>Busca, filtra y administra los libros de tu biblioteca.</p>
         </div>
-    </footer>
+        <span id="contador-libros" class="contador-libros">0 libros</span>
+      </div>
+
+      <div class="herramientas-catalogo">
+        <label class="campo-busqueda">
+          <span aria-hidden="true">⌕</span>
+          <input id="busqueda-libros" type="search" placeholder="Buscar por título o autor..." aria-label="Buscar por título o autor">
+        </label>
+
+        <label class="campo-normal">
+          <span class="texto-oculto">Filtrar por género</span>
+          <select id="filtro-genero"><option value="todos">Todos los géneros</option></select>
+        </label>
+
+        <label class="campo-normal">
+          <span class="texto-oculto">Filtrar por estado</span>
+          <select id="filtro-estado">
+            <option value="todos">Todos los estados</option>
+            <option value="disponible">Disponibles</option>
+            <option value="prestado">Prestados</option>
+            <option value="coleccion">De colección</option>
+          </select>
+        </label>
+
+        <label class="campo-normal">
+          <span class="texto-oculto">Ordenar catálogo</span>
+          <select id="orden-catalogo">
+            <option value="titulo-asc">Título A–Z</option>
+            <option value="titulo-desc">Título Z–A</option>
+            <option value="autor-asc">Autor A–Z</option>
+            <option value="autor-desc">Autor Z–A</option>
+            <option value="anio-asc">Año ascendente</option>
+            <option value="anio-desc">Año descendente</option>
+          </select>
+        </label>
+      </div>
+
+      <p id="mensaje-catalogo" class="mensaje" role="status" aria-live="polite"></p>
+      <div id="lista-libros" class="rejilla-libros" aria-live="polite"></div>
+    </section>
+
+    <!-- VISTA 2: PRÉSTAMOS E HISTORIAL -->
+    <section id="vista-prestamos" class="vista" data-panel="prestamos" hidden>
+      <div class="encabezado-vista">
+        <span class="etiqueta-superior">SEGUIMIENTO</span>
+        <h1>Mis préstamos</h1>
+        <p>Consulta los libros prestados y el historial de devoluciones.</p>
+      </div>
+
+      <div class="bloque-seccion">
+        <h2>Préstamos activos <span id="contador-activos" class="insignia">0</span></h2>
+        <div id="lista-activos" class="lista-prestamos"></div>
+      </div>
+
+      <div class="bloque-seccion">
+        <h2>Historial de devoluciones</h2>
+        <div id="lista-historial" class="lista-prestamos"></div>
+      </div>
+    </section>
+
+    <!-- VISTA 3: AÑADIR Y EDITAR LIBROS -->
+    <section id="vista-formulario" class="vista" data-panel="formulario" hidden>
+      <div class="encabezado-vista">
+        <span class="etiqueta-superior">GESTIONAR COLECCIÓN</span>
+        <h1 id="titulo-formulario">Añadir un libro</h1>
+        <p>Completa los datos para registrar una obra.</p>
+      </div>
+
+      <form id="form-libro" class="formulario-libro" novalidate>
+        <input id="libro-id" type="hidden">
+
+        <div class="campos-formulario">
+          <label class="campo-formulario">
+            Título <span class="requerido">*</span>
+            <input id="titulo" name="titulo" minlength="3" maxlength="60" required>
+            <small>Entre 3 y 60 caracteres.</small>
+            <span id="error-titulo" class="error-campo"></span>
+          </label>
+
+          <label class="campo-formulario">
+            Autor <span class="requerido">*</span>
+            <input id="autor" name="autor" maxlength="80" required>
+            <span id="error-autor" class="error-campo"></span>
+          </label>
+
+          <label class="campo-formulario">
+            Año de publicación <span class="requerido">*</span>
+            <input id="anio" name="anio" type="number" min="1000" max="2026" required>
+            <span id="error-anio" class="error-campo"></span>
+          </label>
+
+          <label class="campo-formulario">
+            Género <span class="requerido">*</span>
+            <select id="genero" name="genero" required>
+              <option value="">Selecciona un género</option>
+              <option>Novela</option>
+              <option>Ciencia</option>
+              <option>Historia</option>
+              <option>Tecnología</option>
+              <option>Fantasía</option>
+              <option>Poesía</option>
+              <option>Otro</option>
+            </select>
+            <span id="error-genero" class="error-campo"></span>
+          </label>
+
+          <label class="campo-formulario campo-completo">
+            Comentario o descripción <span class="opcional">(opcional)</span>
+            <textarea id="comentario" name="comentario" rows="4" maxlength="120" placeholder="Describe brevemente el libro..."></textarea>
+            <small><span id="contador-caracteres">0</span>/120 caracteres</small>
+          </label>
+
+          <label class="casilla-formulario campo-completo">
+            <input id="coleccion" name="coleccion" type="checkbox">
+            <span>Libro de colección o consulta (no se puede prestar)</span>
+          </label>
+        </div>
+
+        <p id="mensaje-formulario" class="mensaje" role="status" aria-live="polite"></p>
+        <div class="acciones-formulario">
+          <button id="guardar-libro" class="boton-principal" type="submit">Guardar libro</button>
+          <button id="cancelar-formulario" class="boton-secundario" type="button">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- VISTA 4: ESTADÍSTICAS Y CONFIGURACIÓN -->
+    <section id="vista-resumen" class="vista" data-panel="resumen" hidden>
+      <div class="encabezado-vista">
+        <span class="etiqueta-superior">TU BIBLIOTECA</span>
+        <h1>Resumen y configuración</h1>
+        <p>Estadísticas actualizadas y preferencias de la aplicación.</p>
+      </div>
+
+      <div id="tarjetas-resumen" class="rejilla-resumen"></div>
+
+      <div class="bloque-seccion">
+        <h2>Libros por género</h2>
+        <div id="resumen-generos" class="resumen-generos"></div>
+      </div>
+
+      <div class="bloque-seccion ajustes">
+        <h2>Configuración</h2>
+        <label class="campo-formulario">
+          Tu nombre
+          <input id="nombre-usuario" maxlength="40" placeholder="¿Cómo te llamas?">
+        </label>
+        <button id="guardar-nombre" class="boton-principal" type="button">Guardar nombre</button>
+        <p id="mensaje-ajustes" class="mensaje" role="status"></p>
+
+        <div class="zona-peligro">
+          <div>
+            <h3>Restablecer biblioteca</h3>
+            <p>Elimina los cambios guardados y restaura los datos de ejemplo.</p>
+          </div>
+          <button id="restablecer-biblioteca" class="boton-peligro" type="button">Restablecer datos</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- VENTANA PARA REGISTRAR UN PRÉSTAMO -->
+  <dialog id="dialogo-prestamo" class="dialogo">
+    <form id="form-prestamo" class="dialogo-contenido" novalidate>
+      <button class="boton-cerrar" type="button" data-cerrar-dialogo aria-label="Cerrar">×</button>
+      <span class="etiqueta-superior">REGISTRAR PRÉSTAMO</span>
+      <h2>Prestar libro</h2>
+      <p id="libro-para-prestar" class="texto-secundario"></p>
+      <input id="id-libro-prestamo" type="hidden">
+
+      <label class="campo-formulario">
+        Nombre de la persona <span class="requerido">*</span>
+        <input id="persona-prestamo" minlength="2" maxlength="40" required>
+        <span id="error-persona" class="error-campo"></span>
+      </label>
+
+      <p id="mensaje-prestamo" class="mensaje" role="status"></p>
+      <div class="acciones-formulario">
+        <button class="boton-principal" type="submit">Confirmar préstamo</button>
+        <button class="boton-secundario" type="button" data-cerrar-dialogo>Cancelar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- VENTANA DE CONFIRMACIÓN PERSONALIZADA -->
+  <dialog id="dialogo-confirmacion" class="dialogo">
+    <div class="dialogo-contenido">
+      <button class="boton-cerrar" type="button" data-cerrar-confirmacion aria-label="Cerrar">×</button>
+      <span class="etiqueta-superior">CONFIRMACIÓN</span>
+      <h2 id="titulo-confirmacion">¿Estás seguro?</h2>
+      <p id="texto-confirmacion" class="texto-secundario"></p>
+      <div class="acciones-formulario">
+        <button id="confirmar-accion" class="boton-peligro" type="button">Confirmar</button>
+        <button class="boton-secundario" type="button" data-cerrar-confirmacion>Cancelar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="notificacion" class="notificacion" role="status" aria-live="polite"></div>
+
+  <footer class="pie-pagina">
+    <div class="contenedor pie-contenido">
+      <p>© <span id="anio-actual"></span> Biblioteca Digital</p>
+      <p>Un libro puede cambiar tu manera de ver el mundo.</p>
+    </div>
+  </footer>
 </body>
 </html>
