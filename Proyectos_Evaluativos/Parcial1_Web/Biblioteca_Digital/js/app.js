@@ -92,6 +92,7 @@ const libros = [
     }
 ];
 
+// Elementos de la página
 const listaLibros = document.getElementById("lista-libros");
 const campoBusqueda = document.getElementById("busqueda-libros");
 const filtroCategoria = document.getElementById("filtro-categoria");
@@ -106,110 +107,207 @@ const nombresCategorias = {
     tecnologia: "Tecnología"
 };
 
-function mostrarLibros() {
-    const consulta = campoBusqueda.value
-        .trim()
-        .toLocaleLowerCase("es");
+// Comprueba que los elementos necesarios existan en el HTML.
+if (
+    !listaLibros ||
+    !campoBusqueda ||
+    !filtroCategoria ||
+    !contadorLibros ||
+    !botonTema ||
+    !anioActual
+) {
+    console.error(
+        "No se encontraron todos los elementos necesarios. " +
+        "Revisa los identificadores del archivo index.html."
+    );
+} else {
+    // Convierte el texto a minúsculas y elimina las tildes.
+    function normalizarTexto(texto) {
+        return texto
+            .toLocaleLowerCase("es")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+    }
 
-    const categoriaSeleccionada = filtroCategoria.value;
+    // Obtiene los libros que coinciden con la búsqueda y la categoría.
+    function obtenerLibrosFiltrados() {
+        const consulta = normalizarTexto(campoBusqueda.value);
+        const categoriaSeleccionada = filtroCategoria.value;
 
-    const librosFiltrados = libros.filter((libro) => {
-        const coincideTexto =
-            libro.titulo.toLocaleLowerCase("es").includes(consulta) ||
-            libro.autor.toLocaleLowerCase("es").includes(consulta);
+        return libros.filter((libro) => {
+            const titulo = normalizarTexto(libro.titulo);
+            const autor = normalizarTexto(libro.autor);
+            const descripcion = normalizarTexto(libro.descripcion);
 
-        const coincideCategoria =
-            categoriaSeleccionada === "todos" ||
-            libro.categoria === categoriaSeleccionada;
+            const coincideTexto =
+                titulo.includes(consulta) ||
+                autor.includes(consulta) ||
+                descripcion.includes(consulta);
 
-        return coincideTexto && coincideCategoria;
+            const coincideCategoria =
+                categoriaSeleccionada === "todos" ||
+                libro.categoria === categoriaSeleccionada;
+
+            return coincideTexto && coincideCategoria;
+        });
+    }
+
+    // Dibuja las tarjetas del catálogo.
+    function mostrarLibros() {
+        const librosFiltrados = obtenerLibrosFiltrados();
+
+        contadorLibros.textContent =
+            `${librosFiltrados.length} ${
+                librosFiltrados.length === 1 ? "libro encontrado" : "libros encontrados"
+            }`;
+
+        if (librosFiltrados.length === 0) {
+            const consulta = campoBusqueda.value.trim();
+
+            listaLibros.innerHTML = `
+                <div class="sin-resultados">
+                    <h3>No encontramos libros</h3>
+                    <p>
+                        ${
+                            consulta
+                                ? `No hay resultados para «${escaparHTML(consulta)}».`
+                                : "No hay libros en esta categoría."
+                        }
+                    </p>
+                    <button
+                        class="boton-detalle"
+                        type="button"
+                        id="boton-limpiar-vacio"
+                    >
+                        Limpiar búsqueda y filtros
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        listaLibros.innerHTML = librosFiltrados.map((libro) => `
+            <article class="tarjeta-libro">
+                <div
+                    class="portada-libro"
+                    style="--color-portada: ${libro.fondo}"
+                >
+                    <div
+                        class="miniatura-libro"
+                        style="--color-libro: ${libro.color}"
+                    >
+                        <span aria-hidden="true">${escaparHTML(libro.simbolo)}</span>
+                        <strong>${escaparHTML(libro.titulo)}</strong>
+                        <small>BIBLIOTECA DIGITAL</small>
+                    </div>
+                </div>
+
+                <div class="informacion-libro">
+                    <span class="categoria-libro">
+                        ${nombresCategorias[libro.categoria]}
+                    </span>
+
+                    <h3>${escaparHTML(libro.titulo)}</h3>
+                    <p class="autor-libro">
+                        Por ${escaparHTML(libro.autor)}
+                    </p>
+                    <p class="descripcion-libro">
+                        ${escaparHTML(libro.descripcion)}
+                    </p>
+
+                    <button
+                        class="boton-detalle"
+                        type="button"
+                        data-libro-id="${libro.id}"
+                    >
+                        Ver información
+                    </button>
+                </div>
+            </article>
+        `).join("");
+    }
+
+    // Evita interpretar como HTML el texto insertado en las tarjetas.
+    function escaparHTML(texto) {
+        return String(texto).replace(/[&<>"']/g, (caracter) => {
+            const entidades = {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            };
+
+            return entidades[caracter];
+        });
+    }
+
+    // Muestra toda la información del libro seleccionado.
+    function mostrarDetalleLibro(id) {
+        const libro = libros.find((elemento) => elemento.id === id);
+
+        if (!libro) {
+            return;
+        }
+
+        alert(
+            `Título: ${libro.titulo}\n` +
+            `Autor: ${libro.autor}\n` +
+            `Categoría: ${nombresCategorias[libro.categoria]}\n\n` +
+            `Descripción: ${libro.descripcion}`
+        );
+    }
+
+    // Limpia el campo de búsqueda y devuelve el filtro a "todos".
+    function limpiarFiltros() {
+        campoBusqueda.value = "";
+        filtroCategoria.value = "todos";
+        mostrarLibros();
+        campoBusqueda.focus();
+    }
+
+    // Búsqueda en tiempo real.
+    campoBusqueda.addEventListener("input", mostrarLibros);
+
+    // Filtrado por categoría.
+    filtroCategoria.addEventListener("change", mostrarLibros);
+
+    // Gestiona los botones de las tarjetas y el botón de resultados vacíos.
+    listaLibros.addEventListener("click", (evento) => {
+        const botonLimpiar = evento.target.closest("#boton-limpiar-vacio");
+
+        if (botonLimpiar) {
+            limpiarFiltros();
+            return;
+        }
+
+        const botonDetalle = evento.target.closest("[data-libro-id]");
+
+        if (!botonDetalle) {
+            return;
+        }
+
+        mostrarDetalleLibro(Number(botonDetalle.dataset.libroId));
     });
 
-    contadorLibros.textContent =
-        `${librosFiltrados.length} ${librosFiltrados.length === 1 ? "libro" : "libros"}`;
+    // Cambia entre tema claro y oscuro.
+    botonTema.addEventListener("click", () => {
+        const temaOscuro = document.body.classList.toggle("tema-oscuro");
 
-    if (librosFiltrados.length === 0) {
-        listaLibros.innerHTML = `
-            <div class="sin-resultados">
-                <h3>No encontramos libros</h3>
-                <p>Prueba con otro título, autor o categoría.</p>
-            </div>
-        `;
-        return;
-    }
+        botonTema.setAttribute(
+            "aria-label",
+            temaOscuro ? "Cambiar a tema claro" : "Cambiar a tema oscuro"
+        );
 
-    listaLibros.innerHTML = librosFiltrados.map((libro) => `
-        <article class="tarjeta-libro">
-            <div class="portada-libro"
-                 style="--color-portada: ${libro.fondo}">
-                <div class="miniatura-libro"
-                     style="--color-libro: ${libro.color}">
-                    <span aria-hidden="true">${libro.simbolo}</span>
-                    <strong>${libro.titulo}</strong>
-                    <small>BIBLIOTECA DIGITAL</small>
-                </div>
-            </div>
+        botonTema.title = temaOscuro
+            ? "Cambiar a tema claro"
+            : "Cambiar a tema oscuro";
+    });
 
-            <div class="informacion-libro">
-                <span class="categoria-libro">
-                    ${nombresCategorias[libro.categoria]}
-                </span>
+    // Muestra el año actual en el pie de página.
+    anioActual.textContent = new Date().getFullYear();
 
-                <h3>${libro.titulo}</h3>
-                <p class="autor-libro">Por ${libro.autor}</p>
-                <p class="descripcion-libro">${libro.descripcion}</p>
-
-                <button class="boton-detalle"
-                        type="button"
-                        data-libro-id="${libro.id}">
-                    Ver información
-                </button>
-            </div>
-        </article>
-    `).join("");
+    // Primera carga del catálogo.
+    mostrarLibros();
 }
-
-function mostrarDetalleLibro(id) {
-    const libro = libros.find((elemento) => elemento.id === id);
-
-    if (!libro) {
-        return;
-    }
-
-    alert(
-        `Título: ${libro.titulo}\n` +
-        `Autor: ${libro.autor}\n` +
-        `Categoría: ${nombresCategorias[libro.categoria]}\n\n` +
-        libro.descripcion
-    );
-}
-
-campoBusqueda.addEventListener("input", mostrarLibros);
-filtroCategoria.addEventListener("change", mostrarLibros);
-
-listaLibros.addEventListener("click", (evento) => {
-    const boton = evento.target.closest("[data-libro-id]");
-
-    if (!boton) {
-        return;
-    }
-
-    mostrarDetalleLibro(Number(boton.dataset.libroId));
-});
-
-botonTema.addEventListener("click", () => {
-    const temaOscuro = document.body.classList.toggle("tema-oscuro");
-
-    botonTema.setAttribute(
-        "aria-label",
-        temaOscuro ? "Cambiar a tema claro" : "Cambiar a tema oscuro"
-    );
-
-    botonTema.title = temaOscuro
-        ? "Cambiar a tema claro"
-        : "Cambiar a tema oscuro";
-});
-
-anioActual.textContent = new Date().getFullYear();
-
-mostrarLibros();
