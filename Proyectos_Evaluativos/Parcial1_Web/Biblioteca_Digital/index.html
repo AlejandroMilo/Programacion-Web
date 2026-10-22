@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Biblioteca Digital: explora, busca y organiza libros.">
+    <meta name="theme-color" content="#f8f7f3">
     <title>Biblioteca Digital</title>
     <link rel="stylesheet" href="css/estilos.css">
     <script src="js/app.js" defer></script>
@@ -12,7 +13,7 @@
 <body>
     <header class="encabezado">
         <div class="contenedor encabezado-contenido">
-            <a class="marca" href="#" aria-label="Biblioteca Digital, inicio">
+            <a class="marca" href="#inicio" aria-label="Biblioteca Digital, inicio">
                 <span class="marca-icono">B</span>
                 <span>Biblioteca <strong>Digital</strong></span>
             </a>
@@ -102,6 +103,43 @@
             </div>
         </section>
     </main>
+
+    <!-- Ventana de información de cada libro -->
+    <dialog id="dialogo-libro" class="dialogo-libro"
+            aria-labelledby="detalle-titulo">
+        <div class="dialogo-contenido">
+            <button id="boton-cerrar-detalle" class="boton-cerrar-detalle"
+                    type="button" aria-label="Cerrar detalles">
+                &times;
+            </button>
+
+            <span class="etiqueta-superior">DETALLES DEL LIBRO</span>
+
+            <div class="detalle-libro-icono" aria-hidden="true">📖</div>
+
+            <h2 id="detalle-titulo">Título del libro</h2>
+
+            <p class="detalle-autor">
+                <strong>Autor:</strong>
+                <span id="detalle-autor"></span>
+            </p>
+
+            <p class="detalle-categoria">
+                <strong>Categoría:</strong>
+                <span id="detalle-categoria"></span>
+            </p>
+
+            <div class="detalle-separador"></div>
+
+            <h3>Sobre esta obra</h3>
+            <p id="detalle-descripcion" class="detalle-descripcion"></p>
+
+            <button id="boton-cerrar-final" class="boton-principal"
+                    type="button">
+                Volver al catálogo
+            </button>
+        </div>
+    </dialog>
 
     <footer class="pie-pagina">
         <div class="contenedor pie-contenido">

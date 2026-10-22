@@ -92,13 +92,22 @@ const libros = [
     }
 ];
 
-// Elementos de la página
+// Elementos principales de la página.
 const listaLibros = document.getElementById("lista-libros");
 const campoBusqueda = document.getElementById("busqueda-libros");
 const filtroCategoria = document.getElementById("filtro-categoria");
 const contadorLibros = document.getElementById("contador-libros");
 const botonTema = document.getElementById("boton-tema");
 const anioActual = document.getElementById("anio-actual");
+
+// Elementos de la ventana de detalles.
+const dialogoLibro = document.getElementById("dialogo-libro");
+const detalleTitulo = document.getElementById("detalle-titulo");
+const detalleAutor = document.getElementById("detalle-autor");
+const detalleCategoria = document.getElementById("detalle-categoria");
+const detalleDescripcion = document.getElementById("detalle-descripcion");
+const botonCerrarDetalle = document.getElementById("boton-cerrar-detalle");
+const botonCerrarFinal = document.getElementById("boton-cerrar-final");
 
 const nombresCategorias = {
     novela: "Novela",
@@ -107,7 +116,7 @@ const nombresCategorias = {
     tecnologia: "Tecnología"
 };
 
-// Comprueba que los elementos necesarios existan en el HTML.
+// Comprueba que existan los elementos principales.
 if (
     !listaLibros ||
     !campoBusqueda ||
@@ -118,19 +127,34 @@ if (
 ) {
     console.error(
         "No se encontraron todos los elementos necesarios. " +
-        "Revisa los identificadores del archivo index.html."
+        "Revisa los identificadores de index.html."
     );
 } else {
-    // Convierte el texto a minúsculas y elimina las tildes.
+    // Normaliza el texto para ignorar mayúsculas y tildes.
     function normalizarTexto(texto) {
-        return texto
+        return String(texto)
             .toLocaleLowerCase("es")
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
             .trim();
     }
 
-    // Obtiene los libros que coinciden con la búsqueda y la categoría.
+    // Escapa texto para evitar que se interprete como HTML.
+    function escaparHTML(texto) {
+        const entidades = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        };
+
+        return String(texto).replace(/[&<>"']/g, (caracter) => {
+            return entidades[caracter];
+        });
+    }
+
+    // Devuelve los libros que coinciden con la búsqueda y la categoría.
     function obtenerLibrosFiltrados() {
         const consulta = normalizarTexto(campoBusqueda.value);
         const categoriaSeleccionada = filtroCategoria.value;
@@ -153,13 +177,15 @@ if (
         });
     }
 
-    // Dibuja las tarjetas del catálogo.
+    // Muestra las tarjetas del catálogo.
     function mostrarLibros() {
         const librosFiltrados = obtenerLibrosFiltrados();
 
         contadorLibros.textContent =
             `${librosFiltrados.length} ${
-                librosFiltrados.length === 1 ? "libro encontrado" : "libros encontrados"
+                librosFiltrados.length === 1
+                    ? "libro encontrado"
+                    : "libros encontrados"
             }`;
 
         if (librosFiltrados.length === 0) {
@@ -209,9 +235,11 @@ if (
                     </span>
 
                     <h3>${escaparHTML(libro.titulo)}</h3>
+
                     <p class="autor-libro">
                         Por ${escaparHTML(libro.autor)}
                     </p>
+
                     <p class="descripcion-libro">
                         ${escaparHTML(libro.descripcion)}
                     </p>
@@ -220,6 +248,7 @@ if (
                         class="boton-detalle"
                         type="button"
                         data-libro-id="${libro.id}"
+                        aria-label="Ver información de ${escaparHTML(libro.titulo)}"
                     >
                         Ver información
                     </button>
@@ -228,22 +257,7 @@ if (
         `).join("");
     }
 
-    // Evita interpretar como HTML el texto insertado en las tarjetas.
-    function escaparHTML(texto) {
-        return String(texto).replace(/[&<>"']/g, (caracter) => {
-            const entidades = {
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            };
-
-            return entidades[caracter];
-        });
-    }
-
-    // Muestra toda la información del libro seleccionado.
+    // Abre la ventana con los datos del libro seleccionado.
     function mostrarDetalleLibro(id) {
         const libro = libros.find((elemento) => elemento.id === id);
 
@@ -251,29 +265,58 @@ if (
             return;
         }
 
-        alert(
-            `Título: ${libro.titulo}\n` +
-            `Autor: ${libro.autor}\n` +
-            `Categoría: ${nombresCategorias[libro.categoria]}\n\n` +
-            `Descripción: ${libro.descripcion}`
-        );
+        // Si todavía no se ha añadido el diálogo al HTML,
+        // muestra la información de manera alternativa.
+        if (
+            !dialogoLibro ||
+            !detalleTitulo ||
+            !detalleAutor ||
+            !detalleCategoria ||
+            !detalleDescripcion ||
+            typeof dialogoLibro.showModal !== "function"
+        ) {
+            alert(
+                `Título: ${libro.titulo}\n` +
+                `Autor: ${libro.autor}\n` +
+                `Categoría: ${nombresCategorias[libro.categoria]}\n\n` +
+                `Descripción: ${libro.descripcion}`
+            );
+            return;
+        }
+
+        detalleTitulo.textContent = libro.titulo;
+        detalleAutor.textContent = libro.autor;
+        detalleCategoria.textContent = nombresCategorias[libro.categoria];
+        detalleDescripcion.textContent = libro.descripcion;
+
+        if (!dialogoLibro.open) {
+            dialogoLibro.showModal();
+        }
     }
 
-    // Limpia el campo de búsqueda y devuelve el filtro a "todos".
+    // Cierra la ventana de detalles.
+    function cerrarDetalleLibro() {
+        if (dialogoLibro && dialogoLibro.open) {
+            dialogoLibro.close();
+        }
+    }
+
+    // Limpia la búsqueda y restablece todas las categorías.
     function limpiarFiltros() {
         campoBusqueda.value = "";
         filtroCategoria.value = "todos";
+
         mostrarLibros();
         campoBusqueda.focus();
     }
 
-    // Búsqueda en tiempo real.
+    // Actualiza el catálogo mientras el usuario escribe.
     campoBusqueda.addEventListener("input", mostrarLibros);
 
-    // Filtrado por categoría.
+    // Actualiza el catálogo al cambiar de categoría.
     filtroCategoria.addEventListener("change", mostrarLibros);
 
-    // Gestiona los botones de las tarjetas y el botón de resultados vacíos.
+    // Gestiona los clics de las tarjetas mediante un solo evento.
     listaLibros.addEventListener("click", (evento) => {
         const botonLimpiar = evento.target.closest("#boton-limpiar-vacio");
 
@@ -291,7 +334,33 @@ if (
         mostrarDetalleLibro(Number(botonDetalle.dataset.libroId));
     });
 
-    // Cambia entre tema claro y oscuro.
+    // Registra los eventos de cierre si el diálogo existe en el HTML.
+    if (dialogoLibro) {
+        if (botonCerrarDetalle) {
+            botonCerrarDetalle.addEventListener(
+                "click",
+                cerrarDetalleLibro
+            );
+        }
+
+        if (botonCerrarFinal) {
+            botonCerrarFinal.addEventListener(
+                "click",
+                cerrarDetalleLibro
+            );
+        }
+
+        // Cierra al hacer clic en el fondo de la ventana.
+        dialogoLibro.addEventListener("click", (evento) => {
+            if (evento.target === dialogoLibro) {
+                cerrarDetalleLibro();
+            }
+        });
+
+        // Escape cierra el diálogo de forma nativa.
+    }
+
+    // Alterna entre el tema claro y el oscuro.
     botonTema.addEventListener("click", () => {
         const temaOscuro = document.body.classList.toggle("tema-oscuro");
 
@@ -308,6 +377,6 @@ if (
     // Muestra el año actual en el pie de página.
     anioActual.textContent = new Date().getFullYear();
 
-    // Primera carga del catálogo.
+    // Carga inicial del catálogo.
     mostrarLibros();
 }
