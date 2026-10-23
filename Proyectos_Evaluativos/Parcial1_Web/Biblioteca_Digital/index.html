@@ -72,15 +72,12 @@
           <select id="filtro-genero"><option value="todos">Todos los géneros</option></select>
         </label>
 
-        <label class="campo-normal">
+        <div class="filtro-estado-botones">
           <span class="texto-oculto">Filtrar por estado</span>
-          <select id="filtro-estado">
-            <option value="todos">Todos los estados</option>
-            <option value="disponible">Disponibles</option>
-            <option value="prestado">Prestados</option>
-            <option value="coleccion">De colección</option>
-          </select>
-        </label>
+          <button type="button" class="filtro-estado-btn activo" data-estado="todos">Todos</button>
+          <button type="button" class="filtro-estado-btn" data-estado="disponible">Disponibles</button>
+          <button type="button" class="filtro-estado-btn" data-estado="prestado">Prestados</button>
+        </div>
 
         <label class="campo-normal">
           <span class="texto-oculto">Ordenar catálogo</span>
@@ -145,7 +142,7 @@
 
           <label class="campo-formulario">
             Año de publicación <span class="requerido">*</span>
-            <input id="anio" name="anio" type="number" min="1000" max="2026" required>
+            <input id="anio" name="anio" type="number" min="1000" required>
             <span id="error-anio" class="error-campo"></span>
           </label>
 

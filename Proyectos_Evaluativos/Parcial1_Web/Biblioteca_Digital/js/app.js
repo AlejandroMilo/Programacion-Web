@@ -280,6 +280,7 @@ let estado = cargarEstado();
 let vistaActual = "catalogo";
 let accionPendiente = null;
 let temporizadorNotificacion = null;
+let filtroEstadoActual = "todos";
 
 function guardarEstado() {
   try {
@@ -458,7 +459,15 @@ $("orden-catalogo").addEventListener("change", () => {
 
 $("busqueda-libros").addEventListener("input", renderizarCatalogo);
 $("filtro-genero").addEventListener("change", renderizarCatalogo);
-$("filtro-estado").addEventListener("change", renderizarCatalogo);
+
+document.querySelectorAll(".filtro-estado-btn").forEach(boton => {
+  boton.addEventListener("click", () => {
+    document.querySelectorAll(".filtro-estado-btn").forEach(b => b.classList.remove("activo"));
+    boton.classList.add("activo");
+    filtroEstadoActual = boton.dataset.estado;
+    renderizarCatalogo();
+  });
+});
 
 /* =========================================================
    RENDERIZAR TARJETAS DE LIBROS
@@ -469,7 +478,7 @@ function renderizarCatalogo() {
 
   const consulta = normalizar($("busqueda-libros").value);
   const genero = $("filtro-genero").value;
-  const filtroEstado = $("filtro-estado").value;
+  const filtroEstado = filtroEstadoActual;
 
   const librosFiltrados = ordenarLibros(estado.libros.filter(libro => {
     const coincideTexto =
@@ -512,7 +521,9 @@ function renderizarCatalogo() {
     boton.addEventListener("click", () => {
       $("busqueda-libros").value = "";
       $("filtro-genero").value = "todos";
-      $("filtro-estado").value = "todos";
+      filtroEstadoActual = "todos";
+      document.querySelectorAll(".filtro-estado-btn").forEach(b => b.classList.remove("activo"));
+      document.querySelector('.filtro-estado-btn[data-estado="todos"]').classList.add("activo");
       mostrarMensaje("mensaje-catalogo", "");
       renderizarCatalogo();
     });
@@ -529,14 +540,13 @@ function renderizarCatalogo() {
 
 function crearTarjetaLibro(libro) {
   const tarjeta = crearElemento("article", "tarjeta-libro");
+  tarjeta.classList.add(`paleta-${libro.paleta % paletas.length}`);
   const paleta = paletas[libro.paleta % paletas.length] || paletas[0];
   const prestamo = buscarPrestamoActivo(libro.id);
 
   const portada = crearElemento("div", "portada-libro");
-  portada.style.setProperty("--color-portada", paleta.portada);
 
   const miniatura = crearElemento("div", "miniatura-libro");
-  miniatura.style.setProperty("--color-libro", paleta.libro);
 
   miniatura.append(
     crearElemento("span", "", paleta.simbolo),
@@ -813,7 +823,7 @@ function abrirDialogoPrestamo(idLibro) {
 
   $("id-libro-prestamo").value = libro.id;
   $("libro-para-prestar").textContent = `Libro: ${libro.titulo}`;
-  $("persona-prestamo").value = "";
+  $("persona-prestamo").value = estado.nombreUsuario.trim() || "";
   $("error-persona").textContent = "";
   mostrarMensaje("mensaje-prestamo", "");
 
@@ -1210,7 +1220,9 @@ $("restablecer-biblioteca").addEventListener("click", () => {
 
       $("busqueda-libros").value = "";
       $("filtro-genero").value = "todos";
-      $("filtro-estado").value = "todos";
+      filtroEstadoActual = "todos";
+      document.querySelectorAll(".filtro-estado-btn").forEach(b => b.classList.remove("activo"));
+      document.querySelector('.filtro-estado-btn[data-estado="todos"]').classList.add("activo");
       $("orden-catalogo").value = estado.orden;
 
       prepararFormulario();

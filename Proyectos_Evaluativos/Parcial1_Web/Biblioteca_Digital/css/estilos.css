@@ -369,6 +369,34 @@ a {
   color: var(--texto);
 }
 
+.filtro-estado-botones {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filtro-estado-btn {
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 30px;
+  background: var(--superficie);
+  color: var(--texto);
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filtro-estado-btn:hover {
+  border-color: var(--principal);
+  color: var(--principal);
+}
+
+.filtro-estado-btn.activo {
+  background: var(--principal);
+  color: white;
+  border-color: var(--principal);
+}
+
 /* TARJETAS DEL CATÁLOGO */
 
 .rejilla-libros {
@@ -515,6 +543,16 @@ a {
 .acciones-tarjeta button:hover:not(:disabled) {
   border-color: var(--principal);
 }
+
+.tarjeta-libro.paleta-0 { --color-portada: #e5ede5; --color-libro: #285943; }
+.tarjeta-libro.paleta-1 { --color-portada: #f4e5dc; --color-libro: #a94f40; }
+.tarjeta-libro.paleta-2 { --color-portada: #e3e9f1; --color-libro: #344c70; }
+.tarjeta-libro.paleta-3 { --color-portada: #f0e8dc; --color-libro: #8b673e; }
+.tarjeta-libro.paleta-4 { --color-portada: #e9e6f4; --color-libro: #4c477d; }
+.tarjeta-libro.paleta-5 { --color-portada: #dfedf0; --color-libro: #28556a; }
+.tarjeta-libro.paleta-6 { --color-portada: #f1ead9; --color-libro: #8b7543; }
+.tarjeta-libro.paleta-7 { --color-portada: #e2eee7; --color-libro: #46705c; }
+.tarjeta-libro.paleta-8 { --color-portada: #f2e5df; --color-libro: #8b5145; }
 
 .sin-resultados {
   grid-column: 1 / -1;
