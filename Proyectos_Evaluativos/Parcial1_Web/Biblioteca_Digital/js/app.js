@@ -21,6 +21,18 @@ const paletas = [
   { portada: "#f2e5df", libro: "#8b5145", simbolo: "⌛" }
 ];
 
+const portadasLibros = {
+  "Cien años de soledad": "cien-anos-de-soledad.jpg",
+  "El principito": "el-principito.jpg",
+  "Breve historia del tiempo": "breve-historia-del-tiempo.jpg",
+  Sapiens: "sapiens.jpg",
+  "Clean Code": "clean-code.jpg",
+  Cosmos: "cosmo.jpg",
+  "Don Quijote de la Mancha": "don-quijote.jpg",
+  "Una breve historia de casi todo": "una-breve-historia-casi-todo.jpg",
+  "Historia del mundo": "historia-del-mundo.jpg"
+};
+
 function fechaISO(fecha) {
   return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, "0")}-${String(fecha.getDate()).padStart(2, "0")}`;
 }
@@ -47,6 +59,15 @@ function normalizar(texto) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim();
+}
+
+function slug(texto) {
+  return String(texto ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
 function crearElemento(etiqueta, clase, texto) {
@@ -236,7 +257,8 @@ function crearDatosIniciales() {
     nombreUsuario: "",
     orden: "titulo-asc",
     siguienteLibro: 10,
-    siguientePrestamo: 5
+    siguientePrestamo: 5,
+    filtroEstado: "todos"
   };
 }
 
@@ -334,7 +356,9 @@ function cambiarVista(nombre) {
   });
 
   document.querySelectorAll(".enlace-nav[data-vista]").forEach(boton => {
-    boton.classList.toggle("activo", boton.dataset.vista === nombre);
+    const esActivo = boton.dataset.vista === nombre;
+    boton.classList.toggle("activo", esActivo);
+    boton.toggleAttribute("aria-current", esActivo);
   });
 
   if (nombre === "catalogo") renderizarCatalogo();
@@ -461,10 +485,17 @@ $("busqueda-libros").addEventListener("input", renderizarCatalogo);
 $("filtro-genero").addEventListener("change", renderizarCatalogo);
 
 document.querySelectorAll(".filtro-estado-btn").forEach(boton => {
+  boton.setAttribute("aria-pressed", boton.classList.contains("activo"));
   boton.addEventListener("click", () => {
-    document.querySelectorAll(".filtro-estado-btn").forEach(b => b.classList.remove("activo"));
+    document.querySelectorAll(".filtro-estado-btn").forEach(b => {
+      b.classList.remove("activo");
+      b.setAttribute("aria-pressed", "false");
+    });
     boton.classList.add("activo");
+    boton.setAttribute("aria-pressed", "true");
     filtroEstadoActual = boton.dataset.estado;
+    estado.filtroEstado = filtroEstadoActual;
+    guardarEstado();
     renderizarCatalogo();
   });
 });
@@ -547,12 +578,16 @@ function crearTarjetaLibro(libro) {
   const portada = crearElemento("div", "portada-libro");
 
   const miniatura = crearElemento("div", "miniatura-libro");
-
-  miniatura.append(
-    crearElemento("span", "", paleta.simbolo),
-    crearElemento("strong", "", libro.titulo),
-    crearElemento("small", "", "BIBLIOTECA DIGITAL")
-  );
+  const archivoPortada = portadasLibros[libro.titulo] || `${slug(libro.titulo)}.jpg`;
+  const img = crearElemento("img", "");
+  img.src = `img/${archivoPortada}`;
+  img.alt = `Portada de ${libro.titulo}`;
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "cover";
+  img.style.display = "block";
+  img.style.borderRadius = "3px 8px 8px 3px";
+  miniatura.append(img);
 
   portada.append(miniatura);
 
@@ -728,9 +763,15 @@ function validarLibro() {
 $("form-libro").addEventListener("submit", evento => {
   evento.preventDefault();
 
+  const btnGuardar = $("guardar-libro");
+  btnGuardar.disabled = true;
+
   const valores = validarLibro();
 
-  if (!valores) return;
+  if (!valores) {
+    btnGuardar.disabled = false;
+    return;
+  }
 
   const id = Number($("libro-id").value);
   const libroExistente = buscarLibro(id);
@@ -784,12 +825,41 @@ $("form-libro").addEventListener("submit", evento => {
     libroExistente ? "Libro actualizado." : "Libro añadido."
   );
 
+  btnGuardar.disabled = false;
   setTimeout(() => cambiarVista("catalogo"), 550);
 });
 
 $("cancelar-formulario").addEventListener("click", () => {
   prepararFormulario();
   cambiarVista("catalogo");
+});
+
+["titulo", "autor", "anio", "genero"].forEach(campo => {
+  $(campo).addEventListener("blur", () => {
+    const valores = {
+      titulo: $("titulo").value.trim(),
+      autor: $("autor").value.trim(),
+      anio: Number($("anio").value),
+      genero: $("genero").value
+    };
+    const errores = {};
+    const anioActual = new Date().getFullYear();
+
+    if (campo === "titulo" && (valores.titulo.length < 3 || valores.titulo.length > 60)) {
+      errores.titulo = "El título debe tener entre 3 y 60 caracteres.";
+    }
+    if (campo === "autor" && !valores.autor) {
+      errores.autor = "Escribe el nombre del autor.";
+    }
+    if (campo === "anio" && (!Number.isInteger(valores.anio) || valores.anio < 1000 || valores.anio > anioActual)) {
+      errores.anio = `Introduce un año entre 1000 y ${anioActual}.`;
+    }
+    if (campo === "genero" && !valores.genero) {
+      errores.genero = "Selecciona un género.";
+    }
+
+    $(`error-${campo}`).textContent = errores[campo] || "";
+  });
 });
 
 /* =========================================================
@@ -1268,6 +1338,17 @@ document.addEventListener("keydown", evento => {
 function iniciarAplicacion() {
   actualizarEncabezado();
   actualizarOpcionesGenero();
+
+  filtroEstadoActual = estado.filtroEstado || "todos";
+  document.querySelectorAll(".filtro-estado-btn").forEach(b => {
+    b.classList.remove("activo");
+    b.setAttribute("aria-pressed", "false");
+  });
+  const btnActivo = document.querySelector(`.filtro-estado-btn[data-estado="${filtroEstadoActual}"]`);
+  if (btnActivo) {
+    btnActivo.classList.add("activo");
+    btnActivo.setAttribute("aria-pressed", "true");
+  }
 
   $("orden-catalogo").value = estado.orden;
 

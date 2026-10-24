@@ -5,7 +5,7 @@
   --fondo: #faf9f6;
   --superficie: #ffffff;
   --texto: #252820;
-  --secundario: #73766e;
+  --secundario: #5c5f58;
   --principal: #285943;
   --principal-hover: #1d4432;
   --acento: #c69b5b;
@@ -126,6 +126,7 @@ a {
 .enlace-nav:hover, .enlace-nav.activo {
   background: rgba(40, 89, 67, .1);
   color: var(--principal);
+  box-shadow: inset 0 0 0 2px var(--principal);
 }
 
 .insignia {
@@ -414,7 +415,7 @@ a {
   border: 1px solid var(--borde);
   border-radius: var(--radio);
   background: var(--superficie);
-  box-shadow: 0 4px 16px var(--sombra);
+  box-shadow: 0 2px 8px var(--sombra);
   transition: transform .22s, box-shadow .22s;
 }
 
@@ -428,37 +429,27 @@ a {
   min-height: 175px;
   place-items: center;
   padding: 22px;
-  background: var(--color-portada, #e5ede5);
+  background: transparent;
 }
 
 .miniatura-libro {
   display: flex;
   width: 118px;
   min-height: 145px;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 15px 10px;
+  justify-content: center;
+  padding: 0;
   border-radius: 3px 8px 8px 3px;
-  background: var(--color-libro, #285943);
+  background: transparent;
   box-shadow: 7px 9px 15px #0003;
-  color: white;
-  text-align: center;
+  overflow: hidden;
 }
 
-.miniatura-libro span {
-  font-size: 1.5rem;
-}
-
-.miniatura-libro strong {
-  font: 600 .92rem/1.25 'Playfair Display', serif;
-  overflow-wrap: anywhere;
-}
-
-.miniatura-libro small {
-  font-size: .48rem;
-  letter-spacing: 1px;
+.miniatura-libro img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .informacion-libro {
@@ -557,9 +548,10 @@ a {
 .sin-resultados {
   grid-column: 1 / -1;
   padding: 38px 20px;
-  border: 1px dashed var(--borde);
+  border: 2px dashed var(--borde);
   border-radius: var(--radio);
   text-align: center;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .sin-resultados h3 {
