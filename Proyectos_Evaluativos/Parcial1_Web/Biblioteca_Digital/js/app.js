@@ -788,6 +788,7 @@ $("form-libro").addEventListener("submit", evento => {
       "No puedes convertir en libro de colección una obra con préstamo activo.",
       true
     );
+   btnGuardar.disabled=false;
     return;
   }
 

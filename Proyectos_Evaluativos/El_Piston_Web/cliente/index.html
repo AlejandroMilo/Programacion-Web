@@ -1,0 +1,189 @@
+
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101010">
+
+  <title>El Pistón | Gestión del taller</title>
+
+  <link rel="icon" href="./assets/capturas/logo_el_piston.png">
+  <link rel="stylesheet" href="./css/estilos.css">
+</head>
+
+<body>
+
+  <div id="app">
+
+    <!-- INICIO DE SESIÓN -->
+    <section class="login-shell" id="loginView">
+
+      <div class="login-brand">
+        <img src="./assets/capturas/logo_el_piston.png" alt="Logo El Pistón">
+        <h1>EL PISTÓN</h1>
+        <p>Tu taller automotriz, organizado.</p>
+        <small>Órdenes, clientes, inventario y pagos en un solo lugar.</small>
+      </div>
+
+      <form id="loginForm" class="login-card">
+
+        <span class="eyebrow">SISTEMA DE GESTIÓN</span>
+
+        <h2>Iniciar sesión</h2>
+
+        <label>
+          Usuario
+          <input
+            name="usuario"
+            type="text"
+            required
+            placeholder="admin, recepcion o mecanico"
+            autocomplete="username"
+          >
+        </label>
+
+        <label>
+          Contraseña
+          <input
+            name="password"
+            type="password"
+            required
+            placeholder="Tu contraseña"
+            autocomplete="current-password"
+          >
+        </label>
+
+        <button class="btn primary full" type="submit">
+          Iniciar sesión
+        </button>
+
+        <p class="muted tiny">
+          Acceso exclusivo para el personal del taller.
+        </p>
+
+        <p id="loginError" class="error"></p>
+
+        <div class="connection-note">
+          API:
+          <span id="apiStatus">comprobando conexión…</span>
+        </div>
+
+      </form>
+
+    </section>
+
+    <!-- ESPACIO DE TRABAJO -->
+    <section id="workspace" class="workspace hidden">
+
+      <!-- BARRA LATERAL -->
+      <aside class="sidebar">
+
+        <div class="brand-mini">
+          <img
+            src="./assets/capturas/logo_el_piston.png"
+            alt="Logo El Pistón"
+          >
+          <b>EL PISTÓN</b>
+        </div>
+
+        <nav id="navigation">
+
+          <button data-page="inicio" class="nav-item active">
+            ▦ <span>Inicio</span>
+          </button>
+
+          <button data-page="ordenes" class="nav-item">
+            ▤ <span>Órdenes</span>
+          </button>
+
+          <button data-page="clientes" class="nav-item">
+            ♙ <span>Clientes</span>
+          </button>
+
+          <button data-page="vehiculos" class="nav-item">
+            ▣ <span>Vehículos</span>
+          </button>
+
+          <button data-page="inventario" class="nav-item">
+            ▧ <span>Inventario</span>
+          </button>
+
+          <button data-page="pagos" class="nav-item">
+            ＄ <span>Pagos</span>
+          </button>
+
+          <button data-page="historial" class="nav-item">
+            ◷ <span>Historial</span>
+          </button>
+
+          <button data-page="reportes" class="nav-item">
+            ▥ <span>Reportes</span>
+          </button>
+
+          <button data-page="mecanicos" class="nav-item">
+            ⚒ <span>Mecánicos</span>
+          </button>
+
+          <button data-page="usuarios" class="nav-item admin-only">
+            ♧ <span>Usuarios</span>
+          </button>
+
+          <button data-page="configuracion" class="nav-item">
+            ⚙ <span>Configuración</span>
+          </button>
+
+        </nav>
+
+        <button id="logoutBtn" class="logout">
+          ↪ <span>Cerrar sesión</span>
+        </button>
+
+      </aside>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="main-area">
+
+        <header class="topbar">
+
+          <div>
+            <span class="eyebrow">TALLER AUTOMOTRIZ</span>
+            <h1 id="pageTitle">Inicio</h1>
+          </div>
+
+          <div class="user-box">
+
+            <span class="avatar" id="userAvatar">A</span>
+
+            <div>
+              <b id="userName">Usuario</b>
+              <small id="userRole">Personal</small>
+            </div>
+
+          </div>
+
+        </header>
+
+        <div id="pageContent" class="page-content"></div>
+
+      </main>
+
+    </section>
+
+    <!-- NOTIFICACIONES -->
+    <div id="toast" class="toast"></div>
+
+    <!-- VENTANA MODAL -->
+    <dialog id="modal">
+      <div id="modalContent"></div>
+    </dialog>
+
+  </div>
+
+  <!-- JAVASCRIPT PRINCIPAL -->
+  <script type="module" src="./js/app.js"></script>
+
+</body>
+
+</html>

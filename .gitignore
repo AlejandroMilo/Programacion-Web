@@ -1,2 +1,18 @@
 
 Proyectos_Evaluativos/Parcial1_Web/.git_respaldo_local/
+
+# Bases de datos y respaldos de PocketBase
+**/pb_data/
+**/pb_data_*/
+**/pb_data_respaldo*/
+**/pb_data_backup*/
+
+# Archivos privados
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencias y archivos generados
+**/node_modules/
+**/.dart_tool/
+**/build/
