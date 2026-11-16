@@ -1,0 +1,13 @@
+﻿# Dependencias y compilaciones
+node_modules/
+dist/
+.env
+.env.*
+
+# Datos locales de PocketBase
+servidor/pb_data/
+
+# Archivos temporales
+*.log
+.DS_Store
+Thumbs.db
