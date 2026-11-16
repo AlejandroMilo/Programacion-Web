@@ -1,0 +1,159 @@
+:root {
+  --fondo: #f5f3ee;
+  --superficie: #ffffff;
+  --superficie-suave: #fbfaf6;
+  --texto: #1f2933;
+  --texto-suave: #66717d;
+  --borde: #e2ded4;
+  --borde-fuerte: #cfc9bc;
+  --acento: #b8501a;
+  --acento-oscuro: #8f3d12;
+  --acento-suave: #fdf0e7;
+  --peligro: #a52a2a;
+  --peligro-suave: #fdecec;
+  --exito: #1d6b3c;
+  --exito-suave: #e6f5eb;
+  --radio: 12px;
+  --radio-pequeno: 8px;
+  --sombra: 0 1px 2px rgba(31, 41, 51, 0.06), 0 8px 24px rgba(31, 41, 51, 0.05);
+
+  font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--texto);
+  background: var(--fondo);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(184, 80, 26, 0.07), transparent 34rem),
+    var(--fondo);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--texto);
+  line-height: 1.2;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 1.12rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--acento);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--acento-oscuro);
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px rgba(184, 80, 26, 0.15);
+}
+
+textarea {
+  resize: vertical;
+}
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.texto-suave {
+  color: var(--texto-suave);
+}
+
+.texto-conservado {
+  white-space: pre-wrap;
+}
+
+.enlace {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--acento);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.enlace:hover {
+  color: var(--acento-oscuro);
+  text-decoration: underline;
+}
