@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Aplica el tema antes de pintar la página para evitar el parpadeo.
+      ;(function () {
+        try {
+          var guardado = localStorage.getItem('tema')
+          var oscuro =
+            guardado === 'oscuro' ||
+            (guardado !== 'claro' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches)
+          document.documentElement.dataset.tema = oscuro ? 'oscuro' : 'claro'
+        } catch (e) {
+          document.documentElement.dataset.tema = 'claro'
+        }
+      })()
+    </script>
     <meta
       name="description"
       content="TecnoFix: sistema de gestión de reparaciones para un taller de equipos electrónicos."

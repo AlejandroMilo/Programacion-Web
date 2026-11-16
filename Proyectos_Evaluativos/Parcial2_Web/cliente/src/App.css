@@ -10,7 +10,7 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--cabecera-fondo);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--borde);
 }
@@ -43,8 +43,8 @@
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: var(--texto);
-  color: #fff;
+  background: var(--marca-icono-fondo);
+  color: var(--marca-icono-color);
   font-weight: 800;
   font-size: 0.9rem;
   letter-spacing: 0.04em;
@@ -95,6 +95,30 @@
 
 .cabecera__accion {
   white-space: nowrap;
+}
+
+.boton-tema {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+
+.boton-tema:hover {
+  background: var(--superficie-suave);
+  color: var(--acento);
+  border-color: var(--acento);
+}
+
+.boton-tema:active {
+  transform: translateY(1px);
 }
 
 /* ----------------------------- Contenido ----------------------------- */
@@ -194,13 +218,13 @@
 .boton--primario {
   background: var(--acento);
   border-color: var(--acento);
-  color: #fff;
+  color: var(--texto-sobre-acento);
 }
 
 .boton--primario:hover {
   background: var(--acento-oscuro);
   border-color: var(--acento-oscuro);
-  color: #fff;
+  color: var(--texto-sobre-acento);
 }
 
 .boton--secundario {
@@ -216,12 +240,12 @@
 
 .boton--peligro {
   background: var(--peligro-suave);
-  border-color: #e8b4b4;
+  border-color: var(--peligro-borde);
   color: var(--peligro);
 }
 
 .boton--peligro:hover {
-  background: #f9dede;
+  background: var(--peligro-hover);
   color: var(--peligro);
 }
 
@@ -444,6 +468,52 @@
   --estado-color: #555d64;
 }
 
+/* Tema oscuro: los mismos estados con fondos profundos y texto claro. */
+html[data-tema='oscuro'] .estado--solicitada {
+  --estado-bg: #24303d;
+  --estado-color: #a9c3dd;
+}
+
+html[data-tema='oscuro'] .estado--diagnostico {
+  --estado-bg: #1e2c3d;
+  --estado-color: #7fb3e8;
+}
+
+html[data-tema='oscuro'] .estado--presupuestada {
+  --estado-bg: #3a3018;
+  --estado-color: #e3b95c;
+}
+
+html[data-tema='oscuro'] .estado--aprobada {
+  --estado-bg: #1d3229;
+  --estado-color: #74c9a4;
+}
+
+html[data-tema='oscuro'] .estado--rechazada {
+  --estado-bg: #3c2222;
+  --estado-color: #e29393;
+}
+
+html[data-tema='oscuro'] .estado--reparacion {
+  --estado-bg: #2b2440;
+  --estado-color: #b9a3ec;
+}
+
+html[data-tema='oscuro'] .estado--lista {
+  --estado-bg: #1f3325;
+  --estado-color: #8bd5a3;
+}
+
+html[data-tema='oscuro'] .estado--entregada {
+  --estado-bg: #233029;
+  --estado-color: #9cc4aa;
+}
+
+html[data-tema='oscuro'] .estado--cancelada {
+  --estado-bg: #2b3038;
+  --estado-color: #aab3bd;
+}
+
 .fila-etiquetas {
   display: flex;
   align-items: center;
@@ -605,7 +675,7 @@
 }
 
 .tabla tbody tr:hover {
-  background: rgba(184, 80, 26, 0.035);
+  background: var(--fila-hover);
 }
 
 .tabla__numero {
@@ -1019,20 +1089,20 @@
 }
 
 .aviso--error {
-  border-color: #e5b5b5;
+  border-color: var(--error-borde);
   background: var(--peligro-suave);
-  color: #7f2222;
+  color: var(--error-texto);
 }
 
 .aviso--exito {
-  border-color: #b3d9c1;
+  border-color: var(--exito-borde);
   background: var(--exito-suave);
-  color: #14532d;
+  color: var(--exito-texto);
 }
 
 .aviso--cerrada {
-  background: #f1f1f1;
-  color: #555d64;
+  background: var(--cerrada-fondo);
+  color: var(--cerrada-texto);
 }
 
 .vacio {

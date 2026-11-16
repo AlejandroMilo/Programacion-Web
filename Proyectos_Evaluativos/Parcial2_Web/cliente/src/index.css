@@ -17,6 +17,23 @@
   --radio-pequeno: 8px;
   --sombra: 0 1px 2px rgba(31, 41, 51, 0.06), 0 8px 24px rgba(31, 41, 51, 0.05);
 
+  /* Colores de apoyo que no pertenecen a la paleta base */
+  --resplandor: rgba(184, 80, 26, 0.07);
+  --anillo-foco: rgba(184, 80, 26, 0.15);
+  --cabecera-fondo: rgba(255, 255, 255, 0.92);
+  --marca-icono-fondo: var(--texto);
+  --marca-icono-color: #ffffff;
+  --texto-sobre-acento: #ffffff;
+  --peligro-borde: #e8b4b4;
+  --peligro-hover: #f9dede;
+  --fila-hover: rgba(184, 80, 26, 0.035);
+  --error-borde: #e5b5b5;
+  --error-texto: #7f2222;
+  --exito-borde: #b3d9c1;
+  --exito-texto: #14532d;
+  --cerrada-fondo: #f1f1f1;
+  --cerrada-texto: #555d64;
+
   font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -25,6 +42,55 @@
   color-scheme: light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tema oscuro: solo se redefinen los colores, la estructura no cambia. */
+html[data-tema='oscuro'] {
+  --fondo: #14161b;
+  --superficie: #1e222a;
+  --superficie-suave: #262b35;
+  --texto: #e8eaee;
+  --texto-suave: #9aa3ae;
+  --borde: #333a45;
+  --borde-fuerte: #474f5c;
+  --acento: #e07a3f;
+  --acento-oscuro: #f09a63;
+  --acento-suave: #3a2a1d;
+  --peligro: #e27575;
+  --peligro-suave: #3b2425;
+  --exito: #5fbe83;
+  --exito-suave: #20332a;
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  --resplandor: rgba(224, 122, 63, 0.09);
+  --anillo-foco: rgba(224, 122, 63, 0.35);
+  --cabecera-fondo: rgba(20, 22, 27, 0.92);
+  --marca-icono-fondo: #e8eaee;
+  --marca-icono-color: #1e222a;
+  --texto-sobre-acento: #221207;
+  --peligro-borde: #6b3a3a;
+  --peligro-hover: #4a2b2c;
+  --fila-hover: rgba(224, 122, 63, 0.07);
+  --error-borde: #6b3a3a;
+  --error-texto: #f0b3b3;
+  --exito-borde: #2f5c40;
+  --exito-texto: #a8e0bc;
+  --cerrada-fondo: #2b3038;
+  --cerrada-texto: #aab3bd;
+
+  color-scheme: dark;
+}
+
+/* Al cambiar de tema se animan los colores durante un instante. */
+html.tema-animando *,
+html.tema-animando *::before,
+html.tema-animando *::after {
+  transition:
+    background-color 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 *,
@@ -38,7 +104,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(184, 80, 26, 0.07), transparent 34rem),
+    radial-gradient(circle at top left, var(--resplandor), transparent 34rem),
     var(--fondo);
 }
 
@@ -111,7 +177,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--acento);
-  box-shadow: 0 0 0 3px rgba(184, 80, 26, 0.15);
+  box-shadow: 0 0 0 3px var(--anillo-foco);
 }
 
 textarea {
