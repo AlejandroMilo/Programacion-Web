@@ -169,7 +169,7 @@ La interfaz oculta opciones según el rol, pero la seguridad real la aplican las
 - **El servidor se detuvo:** vuelve a ejecutar PocketBase; los datos de `pb_data` se conservan al cerrar normalmente.
 
 ## 8. Seguridad y antes de publicar
-
+clear
 - No versionar `pb_data/` ni respaldos (contienen credenciales y superusuario).
 - Cambiar las contraseñas de demo y la del superusuario.
 - Configurar HTTPS y reglas de acceso en todas las colecciones.
@@ -177,7 +177,6 @@ La interfaz oculta opciones según el rol, pero la seguridad real la aplican las
 - Proteger en el servidor las operaciones sensibles (p. ej. descuento de existencias).
 - Sustituir `127.0.0.1` por la dirección pública del despliegue.
 
-## 9. Capturas
+## 9. Capturas de pantallas
 
-- `capturas/`: pantallas de referencia del diseño (procedentes de `pantallas_el_piston.rar`).
 - `Capturas de pantallas/`: capturas reales de la web funcionando con los datos de prueba (escritorio y móvil).
