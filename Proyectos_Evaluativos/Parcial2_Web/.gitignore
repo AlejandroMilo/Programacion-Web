@@ -3,6 +3,7 @@ node_modules/
 dist/
 .env
 .env.*
+!.env.example
 
 # Datos locales de PocketBase
 servidor/pb_data/

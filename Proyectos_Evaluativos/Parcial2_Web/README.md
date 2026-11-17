@@ -16,6 +16,7 @@ Aplicación web para administrar un taller de reparación de equipos electrónic
 - **Historial:** cada cambio de etapa queda registrado con su fecha y nadie puede editarlo ni borrarlo.
 - **Panel de control:** indicadores de órdenes activas, presupuestos por decidir, equipos listos para entregar y un resumen por etapa.
 - **Clientes:** ficha con sus datos de contacto, sus órdenes y un resumen de su actividad.
+- **Tema claro y oscuro:** la interfaz recuerda la preferencia del usuario y respeta la del sistema en la primera visita.
 
 El sistema **no tiene autenticación**: lo usa únicamente el personal del taller (lo pide el enunciado). Los clientes son datos que el taller registra.
 
@@ -57,7 +58,7 @@ Parcial2_Web/
 
 ```bash
 git clone <url-del-repositorio>
-cd Parcial2_Web
+cd Programacion-Web/Proyectos_Evaluativos/Parcial2_Web
 ```
 
 ### 4.2 Descargar PocketBase
@@ -152,7 +153,7 @@ La interfaz **no** es la medida de seguridad: las reglas se validan en los hooks
 
 ## 7. Configuración opcional
 
-- **URL del servidor:** si PocketBase no está en la misma máquina o usa otro puerto, crea `cliente/.env` con:
+- **URL del servidor:** si PocketBase no está en la misma máquina o usa otro puerto, copia `cliente/.env.example` como `cliente/.env` y ajusta:
 
   ```env
   VITE_POCKETBASE_URL=http://192.168.1.50:8090
@@ -178,3 +179,4 @@ npm run lint      # revisar el código con ESLint
 - El esquema vive en `pb_migrations/` y la lógica en `pb_hooks/`; ambos están dentro del repositorio.
 - Sin autenticación por diseño: las reglas de acceso no distinguen quién hace la petición, solo bloquean lo que nunca debe ocurrir; los hooks validan el resto.
 - El cliente usa `fetch`, sin SDK de PocketBase ni librerías de componentes o de estado.
+- `useMemo` se usa para los cálculos derivados que conviene no repetir en cada render (conteos por etapa, filtros de búsqueda, totales del presupuesto). No se usa `useCallback` porque ninguna función necesita identidad estable. `useRef` guarda la referencia al campo que recibe el foco y a los `input` de archivos para poder limpiarlos.
