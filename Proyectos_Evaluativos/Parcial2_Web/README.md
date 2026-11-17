@@ -57,7 +57,7 @@ Parcial2_Web/
 ### 4.1 Clonar el repositorio
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/AlejandroMilo/Programacion-Web.git
 cd Programacion-Web/Proyectos_Evaluativos/Parcial2_Web
 ```
 
