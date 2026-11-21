@@ -25,6 +25,8 @@ El sistema **no tiene autenticación**: lo usa únicamente el personal del talle
 ```text
 Parcial2_Web/
 ├── cliente/                  # Interfaz con React + Vite
+│   ├── public/
+│   │   └── favicon.svg       # Icono de la aplicación
 │   ├── src/
 │   │   ├── api/              # Peticiones fetch a PocketBase
 │   │   ├── componentes/      # Componentes reutilizables
@@ -32,6 +34,7 @@ Parcial2_Web/
 │   │   ├── paginas/          # Una página por ruta
 │   │   ├── App.jsx           # Rutas de React Router
 │   │   └── main.jsx          # Punto de entrada
+│   ├── .env.example          # Ejemplo de configuración de la URL del servidor
 │   ├── index.html
 │   └── package.json
 ├── servidor/                 # PocketBase
